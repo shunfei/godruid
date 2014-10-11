@@ -8,36 +8,52 @@ import (
     "net/http"
 )
 
+const (
+    DefualtEndPoint = "/druid/v2"
+)
+
 type Client struct {
     Url      string
     EndPoint string
-
-    Response []byte
 
     Debug        bool
     LastRequest  string
     LastResponse string
 }
 
-func (c *Client) DoQuery(query Query) (err error) {
-    if c.EndPoint == "" {
-        c.EndPoint = "/druid/v2"
-    }
+func (c *Client) Query(query Query) (err error) {
     query.setup()
     var reqJson []byte
     if c.Debug {
         reqJson, err = json.MarshalIndent(query, "", "  ")
-        c.EndPoint += "?pretty"
-
-        c.LastRequest = string(reqJson)
     } else {
         reqJson, err = json.Marshal(query)
     }
     if err != nil {
-        return err
+        return
+    }
+    result, err := c.QueryRaw(reqJson)
+    if err != nil {
+        return
     }
 
-    resp, err := http.Post(c.Url+c.EndPoint, "application/json", bytes.NewBuffer(reqJson))
+    return query.onResponse(result)
+}
+
+func (c *Client) QueryRaw(req []byte) (result []byte, err error) {
+    if c.EndPoint == "" {
+        c.EndPoint = DefualtEndPoint
+    }
+    endPoint := c.EndPoint
+    if c.Debug {
+        endPoint += "?pretty"
+        c.LastRequest = string(req)
+    }
+    if err != nil {
+        return
+    }
+
+    resp, err := http.Post(c.Url+endPoint, "application/json", bytes.NewBuffer(req))
     if err != nil {
         return
     }
@@ -45,14 +61,17 @@ func (c *Client) DoQuery(query Query) (err error) {
         resp.Body.Close()
     }()
 
-    rawBytes, _ := ioutil.ReadAll(resp.Body)
+    result, err = ioutil.ReadAll(resp.Body)
+    if err != nil {
+        return
+    }
     if c.Debug {
-        c.LastResponse = string(rawBytes)
+        c.LastResponse = string(result)
     }
 
     if resp.StatusCode != http.StatusOK {
-        return fmt.Errorf("%s: %s", resp.Status, string(rawBytes))
+        return nil, fmt.Errorf("%s: %s", resp.Status, string(result))
     }
 
-    return query.onResponse(rawBytes)
+    return
 }

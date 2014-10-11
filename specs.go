@@ -1,6 +1,6 @@
 package godruid
 
-// Defines some small structs here.
+// Defines some small spec like structs here.
 
 // ---------------------------------
 // LimitSpec
@@ -17,7 +17,7 @@ type Column struct {
     Direction string `json:"direction"`
 }
 
-func LimitSpecDefault(limit int, columns ...[]Column) *Limit {
+func LimitDefault(limit int, columns ...[]Column) *Limit {
     var realColums []Column
     if len(columns) > 0 {
         realColums = columns[0]

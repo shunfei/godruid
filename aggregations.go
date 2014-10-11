@@ -1,5 +1,9 @@
 package godruid
 
+import (
+    "encoding/json"
+)
+
 type Aggregation struct {
     Type        string   `json:"type"`
     Name        string   `json:"name,omitempty"`
@@ -9,6 +13,12 @@ type Aggregation struct {
     FnCombine   string   `json:"fnCombine,omitempty"`
     FnReset     string   `json:"fnReset,omitempty"`
     ByRow       bool     `json:"byRow,omitempty"`
+}
+
+func AggRawJson(rawJson string) Aggregation {
+    agg := &Aggregation{}
+    json.Unmarshal([]byte(rawJson), agg)
+    return *agg
 }
 
 func AggCount(name string) Aggregation {

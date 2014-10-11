@@ -6,7 +6,7 @@ import (
 
 // Check http://druid.io/docs/0.6.154/Querying.html#query-operators for detail description.
 
-// The Query interface stand for any kind of druid query.
+// The Query interface stands for any kinds of druid query.
 type Query interface {
     setup()
     onResponse(content []byte) error
@@ -25,7 +25,7 @@ type QueryGroupBy struct {
     Granularity      Granlarity             `json:"granularity"`
     Filter           *Filter                `json:"filter,omitempty"`
     Aggregations     []Aggregation          `json:"aggregations"`
-    PostAggregations []PostAggregatable     `json:"postAggregations,omitempty"`
+    PostAggregations []PostAggregation      `json:"postAggregations,omitempty"`
     Intervals        []string               `json:"intervals"`
     Context          map[string]interface{} `json:"context,omitempty"`
 

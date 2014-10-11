@@ -16,7 +16,7 @@ type DimExtractionFn struct {
     Function     string       `json:"function,omitempty"`
 }
 
-func DimSpecDefault(dimension, outputName string) *Dimension {
+func DimDefault(dimension, outputName string) *Dimension {
     return &Dimension{
         Type:       "default",
         Dimension:  dimension,
@@ -24,7 +24,7 @@ func DimSpecDefault(dimension, outputName string) *Dimension {
     }
 }
 
-func DimSpecExtraction(dimension, outputName string, fn *DimExtractionFn) *Dimension {
+func DimExtraction(dimension, outputName string, fn *DimExtractionFn) *Dimension {
     return &Dimension{
         Type:            "default",
         Dimension:       dimension,
