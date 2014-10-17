@@ -71,15 +71,15 @@ func AggJavaScript(name, fnAggregate, fnCombine, fnReset string, fieldNames []st
     }
 }
 
-func AggCardinality(name, fieldName string, byRow ...bool) Aggregation {
+func AggCardinality(name string, fieldNames []string, byRow ...bool) Aggregation {
     isByRow := false
     if len(byRow) != 0 {
         isByRow = byRow[0]
     }
     return Aggregation{
-        Type:      "cardinality",
-        Name:      name,
-        FieldName: fieldName,
-        ByRow:     isByRow,
+        Type:       "cardinality",
+        Name:       name,
+        FieldNames: fieldNames,
+        ByRow:      isByRow,
     }
 }

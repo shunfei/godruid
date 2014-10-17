@@ -9,7 +9,7 @@ import (
 )
 
 const (
-    DefualtEndPoint = "/druid/v2"
+    DefaultEndPoint = "/druid/v2"
 )
 
 type Client struct {
@@ -42,7 +42,7 @@ func (c *Client) Query(query Query) (err error) {
 
 func (c *Client) QueryRaw(req []byte) (result []byte, err error) {
     if c.EndPoint == "" {
-        c.EndPoint = DefualtEndPoint
+        c.EndPoint = DefaultEndPoint
     }
     endPoint := c.EndPoint
     if c.Debug {

@@ -12,7 +12,7 @@ func TestGroupby(t *testing.T) {
             DataSource:   "campaign",
             Intervals:    []string{"2014-09-01T00:00/2020-01-01T00"},
             Granularity:  GranAll,
-            Filter:       FilterJavaScript("hour", "function(x) { return(x >= 1) }"),
+            Filter:       FilterAnd(FilterJavaScript("hour", "function(x) { return(x >= 1) }"), nil),
             LimitSpec:    LimitDefault(5),
             Dimensions:   []string{"campaign_id"},
             Aggregations: []Aggregation{AggRawJson(`{ "type" : "count", "name" : "count" }`), AggLongSum("impressions", "impressions")},

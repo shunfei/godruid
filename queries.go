@@ -20,16 +20,16 @@ type QueryGroupBy struct {
     QueryType        string                 `json:"queryType"`
     DataSource       string                 `json:"dataSource"`
     Dimensions       []string               `json:"dimensions"`
+    Granularity      Granlarity             `json:"granularity"`
     LimitSpec        *Limit                 `json:"limitSpec,omitempty"`
     Having           *Having                `json:"having,omitempty"`
-    Granularity      Granlarity             `json:"granularity"`
     Filter           *Filter                `json:"filter,omitempty"`
     Aggregations     []Aggregation          `json:"aggregations"`
     PostAggregations []PostAggregation      `json:"postAggregations,omitempty"`
     Intervals        []string               `json:"intervals"`
     Context          map[string]interface{} `json:"context,omitempty"`
 
-    QueryResult *[]GroupbyItem `json:"-"`
+    QueryResult []GroupbyItem `json:"-"`
 }
 
 type GroupbyItem struct {
@@ -40,8 +40,13 @@ type GroupbyItem struct {
 
 func (q *QueryGroupBy) setup() { q.QueryType = "groupBy" }
 func (q *QueryGroupBy) onResponse(content []byte) error {
-    q.QueryResult = new([]GroupbyItem)
-    return json.Unmarshal(content, q.QueryResult)
+    res := new([]GroupbyItem)
+    err := json.Unmarshal(content, res)
+    if err != nil {
+        return err
+    }
+    q.QueryResult = *res
+    return nil
 }
 
 // ---------------------------------
@@ -59,7 +64,7 @@ type QuerySearch struct {
     Sort             *SearchSort            `json:"sort"`
     Context          map[string]interface{} `json:"context,omitempty"`
 
-    QueryResult *[]SearchItem `json:"-"`
+    QueryResult []SearchItem `json:"-"`
 }
 
 type SearchItem struct {
@@ -74,8 +79,13 @@ type DimValue struct {
 
 func (q *QuerySearch) setup() { q.QueryType = "search" }
 func (q *QuerySearch) onResponse(content []byte) error {
-    q.QueryResult = new([]SearchItem)
-    return json.Unmarshal(content, q.QueryResult)
+    res := new([]SearchItem)
+    err := json.Unmarshal(content, res)
+    if err != nil {
+        return err
+    }
+    q.QueryResult = *res
+    return nil
 }
 
 // ---------------------------------
@@ -90,7 +100,7 @@ type QuerySegmentMetadata struct {
     Merge      interface{}            `json:"merge,omitempty"`
     Context    map[string]interface{} `json:"context,omitempty"`
 
-    QueryResult *[]SegmentMetaData `json:"-"`
+    QueryResult []SegmentMetaData `json:"-"`
 }
 
 type SegmentMetaData struct {
@@ -107,8 +117,13 @@ type ColumnItem struct {
 
 func (q *QuerySegmentMetadata) setup() { q.QueryType = "segmentMetadata" }
 func (q *QuerySegmentMetadata) onResponse(content []byte) error {
-    q.QueryResult = new([]SegmentMetaData)
-    return json.Unmarshal(content, q.QueryResult)
+    res := new([]SegmentMetaData)
+    err := json.Unmarshal(content, res)
+    if err != nil {
+        return err
+    }
+    q.QueryResult = *res
+    return nil
 }
 
 // ---------------------------------
@@ -121,7 +136,7 @@ type QueryTimeBoundary struct {
     Bound      string                 `json:"bound,omitempty"`
     Context    map[string]interface{} `json:"context,omitempty"`
 
-    QueryResult *[]TimeBoundaryItem `json:"-"`
+    QueryResult []TimeBoundaryItem `json:"-"`
 }
 
 type TimeBoundaryItem struct {
@@ -136,8 +151,13 @@ type TimeBoundary struct {
 
 func (q *QueryTimeBoundary) setup() { q.QueryType = "timeBoundary" }
 func (q *QueryTimeBoundary) onResponse(content []byte) error {
-    q.QueryResult = new([]TimeBoundaryItem)
-    return json.Unmarshal(content, q.QueryResult)
+    res := new([]TimeBoundaryItem)
+    err := json.Unmarshal(content, res)
+    if err != nil {
+        return err
+    }
+    q.QueryResult = *res
+    return nil
 }
 
 // ---------------------------------
@@ -154,7 +174,7 @@ type QueryTimeseries struct {
     Intervals        []string               `json:"intervals"`
     Context          map[string]interface{} `json:"context,omitempty"`
 
-    QueryResult *[]Timeseries `json:"-"`
+    QueryResult []Timeseries `json:"-"`
 }
 
 type Timeseries struct {
@@ -164,8 +184,13 @@ type Timeseries struct {
 
 func (q *QueryTimeseries) setup() { q.QueryType = "timeseries" }
 func (q *QueryTimeseries) onResponse(content []byte) error {
-    q.QueryResult = new([]Timeseries)
-    return json.Unmarshal(content, q.QueryResult)
+    res := new([]Timeseries)
+    err := json.Unmarshal(content, res)
+    if err != nil {
+        return err
+    }
+    q.QueryResult = *res
+    return nil
 }
 
 // ---------------------------------
@@ -185,7 +210,7 @@ type QueryTopN struct {
     Intervals        []string               `json:"intervals"`
     Context          map[string]interface{} `json:"context,omitempty"`
 
-    QueryResult *[]TopNItem `json:"-"`
+    QueryResult []TopNItem `json:"-"`
 }
 
 type TopNItem struct {
@@ -195,6 +220,11 @@ type TopNItem struct {
 
 func (q *QueryTopN) setup() { q.QueryType = "topN" }
 func (q *QueryTopN) onResponse(content []byte) error {
-    q.QueryResult = new([]TopNItem)
-    return json.Unmarshal(content, q.QueryResult)
+    res := new([]TopNItem)
+    err := json.Unmarshal(content, res)
+    if err != nil {
+        return err
+    }
+    q.QueryResult = *res
+    return nil
 }

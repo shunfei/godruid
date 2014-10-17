@@ -15,6 +15,19 @@ type PostAggregation struct {
     Function   string            `json:"function,omitempty"`
 }
 
+// Return the aggregations which this post-aggregation used.
+// It could be helpful while automatically filling the aggregations base on post-aggregations.
+func (pa PostAggregation) GetRelativeAggs() (aggs []string) {
+    if pa.FieldName != "" {
+        aggs = append(aggs, pa.FieldName)
+    }
+    aggs = append(aggs, pa.FieldNames...)
+    for _, spa := range pa.Fields {
+        aggs = append(aggs, spa.GetRelativeAggs()...)
+    }
+    return
+}
+
 func PostAggRawJson(rawJson string) PostAggregation {
     pa := &PostAggregation{}
     json.Unmarshal([]byte(rawJson), pa)

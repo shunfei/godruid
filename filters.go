@@ -50,6 +50,16 @@ func FilterNot(filter *Filter) *Filter {
 }
 
 func joinFilters(filters []*Filter, connector string) *Filter {
+    // Remove null filters.
+    p := 0
+    for _, f := range filters {
+        if f != nil {
+            filters[p] = f
+            p++
+        }
+    }
+    filters = filters[0:p]
+
     fLen := len(filters)
     if fLen == 0 {
         return nil

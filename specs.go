@@ -12,6 +12,11 @@ type Limit struct {
     Columns []Column `json:"columns,omitempty"`
 }
 
+const (
+    DirectionASC  = "ASCENDING"
+    DirectionDESC = "DESCENDING"
+)
+
 type Column struct {
     Dimension string `json:"dimension"`
     Direction string `json:"direction"`
