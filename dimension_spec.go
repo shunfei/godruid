@@ -1,5 +1,7 @@
 package godruid
 
+type DimSpec interface{}
+
 type Dimension struct {
     Type            string           `json:"type"`
     Dimension       string           `json:"dimension"`
@@ -16,7 +18,7 @@ type DimExtractionFn struct {
     Function     string       `json:"function,omitempty"`
 }
 
-func DimDefault(dimension, outputName string) *Dimension {
+func DimDefault(dimension, outputName string) DimSpec {
     return &Dimension{
         Type:       "default",
         Dimension:  dimension,
@@ -24,7 +26,7 @@ func DimDefault(dimension, outputName string) *Dimension {
     }
 }
 
-func DimExtraction(dimension, outputName string, fn *DimExtractionFn) *Dimension {
+func DimExtraction(dimension, outputName string, fn *DimExtractionFn) DimSpec {
     return &Dimension{
         Type:            "default",
         Dimension:       dimension,

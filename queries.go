@@ -19,7 +19,7 @@ type Query interface {
 type QueryGroupBy struct {
     QueryType        string                 `json:"queryType"`
     DataSource       string                 `json:"dataSource"`
-    Dimensions       []string               `json:"dimensions"`
+    Dimensions       []DimSpec              `json:"dimensions"`
     Granularity      Granlarity             `json:"granularity"`
     LimitSpec        *Limit                 `json:"limitSpec,omitempty"`
     Having           *Having                `json:"having,omitempty"`

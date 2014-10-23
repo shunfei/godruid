@@ -14,7 +14,7 @@ func TestGroupby(t *testing.T) {
             Granularity:  GranAll,
             Filter:       FilterAnd(FilterJavaScript("hour", "function(x) { return(x >= 1) }"), nil),
             LimitSpec:    LimitDefault(5),
-            Dimensions:   []string{"campaign_id"},
+            Dimensions:   []DimSpec{"campaign_id"},
             Aggregations: []Aggregation{AggRawJson(`{ "type" : "count", "name" : "count" }`), AggLongSum("impressions", "impressions")},
             PostAggregations: []PostAggregation{PostAggArithmetic("imp/count", "/", []PostAggregation{
                 PostAggFieldAccessor("impressions"),
