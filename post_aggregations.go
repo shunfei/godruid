@@ -15,15 +15,31 @@ type PostAggregation struct {
     Function   string            `json:"function,omitempty"`
 }
 
-// Return the aggregations which this post-aggregation used.
-// It could be helpful while automatically filling the aggregations base on post-aggregations.
-func (pa PostAggregation) GetRelativeAggs() (aggs []string) {
-    if pa.FieldName != "" {
-        aggs = append(aggs, pa.FieldName)
-    }
-    aggs = append(aggs, pa.FieldNames...)
-    for _, spa := range pa.Fields {
-        aggs = append(aggs, spa.GetRelativeAggs()...)
+// The agg reference.
+type AggRefer struct {
+    Name  string
+    Refer string // The refer of Name, empty means Name has no refer.
+}
+
+// Return the aggregations or post aggregations which this post aggregation used.
+// It could be helpful while automatically filling the aggregations or post aggregations base on this.
+func (pa PostAggregation) GetReferAggs(parentName ...string) (refers []AggRefer) {
+    switch pa.Type {
+    case "arithmetic":
+        for _, spa := range pa.Fields {
+            refers = append(refers, spa.GetReferAggs(pa.Name)...)
+        }
+        refers = append(refers, AggRefer{pa.Name, ""})
+    case "fieldAccess":
+        refers = append(refers, AggRefer{parentName[0], pa.FieldName})
+    case "constant":
+        // no need refers.
+    case "javascript":
+        for _, f := range pa.FieldNames {
+            refers = append(refers, AggRefer{pa.Name, f})
+        }
+    case "hyperUniqueCardinality":
+        refers = append(refers, AggRefer{parentName[0], pa.FieldName})
     }
     return
 }
