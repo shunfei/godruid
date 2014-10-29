@@ -26,10 +26,14 @@ type AggRefer struct {
 func (pa PostAggregation) GetReferAggs(parentName ...string) (refers []AggRefer) {
     switch pa.Type {
     case "arithmetic":
+        if len(parentName) != 0 {
+            refers = append(refers, AggRefer{parentName[0], pa.Name})
+        } else {
+            refers = append(refers, AggRefer{pa.Name, ""})
+        }
         for _, spa := range pa.Fields {
             refers = append(refers, spa.GetReferAggs(pa.Name)...)
         }
-        refers = append(refers, AggRefer{pa.Name, ""})
     case "fieldAccess":
         refers = append(refers, AggRefer{parentName[0], pa.FieldName})
     case "constant":
