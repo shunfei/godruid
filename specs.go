@@ -18,6 +18,7 @@ const (
 )
 
 type Column struct {
+    AsNumber  bool   `json:"asNumber"`
     Dimension string `json:"dimension"`
     Direction string `json:"direction"`
 }
