@@ -85,9 +85,9 @@ func ToIncludeList(columns []string) *ToInclude {
 // ---------------------------------
 
 type TopNMetric struct {
-    Type         string
-    Metric       string
-    PreviousStop interface{}
+    Type         string      `json:"type"`
+    Metric       interface{} `json:"metric,omitempty"`
+    PreviousStop string      `json:"previousStop,omitempty"`
 }
 
 func TopNMetricNumeric(metric string) *TopNMetric {
@@ -111,7 +111,7 @@ func TopNMetricAlphaNumeric(previousStop string) *TopNMetric {
     }
 }
 
-func TopNMetricInverted(metric string) *TopNMetric {
+func TopNMetricInverted(metric *TopNMetric) *TopNMetric {
     return &TopNMetric{
         Type:   "inverted",
         Metric: metric,

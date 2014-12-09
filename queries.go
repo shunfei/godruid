@@ -201,7 +201,7 @@ type QueryTopN struct {
     QueryType        string                 `json:"queryType"`
     DataSource       string                 `json:"dataSource"`
     Granularity      Granlarity             `json:"granularity"`
-    Dimension        *Dimension             `json:"dimension"`
+    Dimension        DimSpec                `json:"dimension"`
     Threshold        int                    `json:"threshold"`
     Metric           *TopNMetric            `json:"metric"`
     Filter           *Filter                `json:"filter,omitempty"`
