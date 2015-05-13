@@ -28,7 +28,7 @@ func DimDefault(dimension, outputName string) DimSpec {
 
 func DimExtraction(dimension, outputName string, fn *DimExtractionFn) DimSpec {
 	return &Dimension{
-		Type:            "default",
+		Type:            "extraction",
 		Dimension:       dimension,
 		OutputName:      outputName,
 		DimExtractionFn: fn,
