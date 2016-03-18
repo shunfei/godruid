@@ -6,14 +6,6 @@ cache:
   directories:
     - vendor
 install:
-- git config --global url.git@github.com:.insteadof https://github.com/
 - make dep
 script:
 - make test
-addons:
-  artifacts:
-    paths: ./p2q
-    debug: true
-    s3_region: eu-west-1
-    s3_bucket: remerge-artifacts
-    target_paths: $TRAVIS_REPO_SLUG/$TRAVIS_BRANCH
