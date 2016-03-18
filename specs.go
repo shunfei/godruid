@@ -7,32 +7,32 @@ package godruid
 // ---------------------------------
 
 type Limit struct {
-    Type    string   `json:"type"`
-    Limit   int      `json:"limit"`
-    Columns []Column `json:"columns,omitempty"`
+	Type    string   `json:"type"`
+	Limit   int      `json:"limit"`
+	Columns []Column `json:"columns,omitempty"`
 }
 
 const (
-    DirectionASC  = "ASCENDING"
-    DirectionDESC = "DESCENDING"
+	DirectionASC  = "ASCENDING"
+	DirectionDESC = "DESCENDING"
 )
 
 type Column struct {
-    AsNumber  bool   `json:"asNumber"`
-    Dimension string `json:"dimension"`
-    Direction string `json:"direction"`
+	AsNumber  bool   `json:"asNumber"`
+	Dimension string `json:"dimension"`
+	Direction string `json:"direction"`
 }
 
 func LimitDefault(limit int, columns ...[]Column) *Limit {
-    var realColums []Column
-    if len(columns) > 0 {
-        realColums = columns[0]
-    }
-    return &Limit{
-        Type:    "default",
-        Limit:   limit,
-        Columns: realColums,
-    }
+	var realColums []Column
+	if len(columns) > 0 {
+		realColums = columns[0]
+	}
+	return &Limit{
+		Type:    "default",
+		Limit:   limit,
+		Columns: realColums,
+	}
 }
 
 // ---------------------------------
@@ -40,23 +40,23 @@ func LimitDefault(limit int, columns ...[]Column) *Limit {
 // ---------------------------------
 
 type SearchQuery struct {
-    Type   string        `json:"type"`
-    Value  interface{}   `json:"value,omitempty"`
-    Values []interface{} `json:"values,omitempty"`
+	Type   string        `json:"type"`
+	Value  interface{}   `json:"value,omitempty"`
+	Values []interface{} `json:"values,omitempty"`
 }
 
 func SearchQueryInsensitiveContains(value interface{}) *SearchQuery {
-    return &SearchQuery{
-        Type:  "insensitive_contains",
-        Value: value,
-    }
+	return &SearchQuery{
+		Type:  "insensitive_contains",
+		Value: value,
+	}
 }
 
 func SearchQueryFragmentSearch(values []interface{}) *SearchQuery {
-    return &SearchQuery{
-        Type:   "fragment",
-        Values: values,
-    }
+	return &SearchQuery{
+		Type:   "fragment",
+		Values: values,
+	}
 }
 
 // ---------------------------------
@@ -64,20 +64,20 @@ func SearchQueryFragmentSearch(values []interface{}) *SearchQuery {
 // ---------------------------------
 
 type ToInclude struct {
-    Type    string   `json:"type"`
-    Columns []string `json:"columns,omitempty"`
+	Type    string   `json:"type"`
+	Columns []string `json:"columns,omitempty"`
 }
 
 var (
-    ToIncludeAll  = &ToInclude{Type: "All"}
-    ToIncludeNone = &ToInclude{Type: "None"}
+	ToIncludeAll  = &ToInclude{Type: "All"}
+	ToIncludeNone = &ToInclude{Type: "None"}
 )
 
 func ToIncludeList(columns []string) *ToInclude {
-    return &ToInclude{
-        Type:    "list",
-        Columns: columns,
-    }
+	return &ToInclude{
+		Type:    "list",
+		Columns: columns,
+	}
 }
 
 // ---------------------------------
@@ -85,37 +85,37 @@ func ToIncludeList(columns []string) *ToInclude {
 // ---------------------------------
 
 type TopNMetric struct {
-    Type         string      `json:"type"`
-    Metric       interface{} `json:"metric,omitempty"`
-    PreviousStop string      `json:"previousStop,omitempty"`
+	Type         string      `json:"type"`
+	Metric       interface{} `json:"metric,omitempty"`
+	PreviousStop string      `json:"previousStop,omitempty"`
 }
 
 func TopNMetricNumeric(metric string) *TopNMetric {
-    return &TopNMetric{
-        Type:   "numeric",
-        Metric: metric,
-    }
+	return &TopNMetric{
+		Type:   "numeric",
+		Metric: metric,
+	}
 }
 
 func TopNMetricLexicographic(previousStop string) *TopNMetric {
-    return &TopNMetric{
-        Type:         "lexicographic",
-        PreviousStop: previousStop,
-    }
+	return &TopNMetric{
+		Type:         "lexicographic",
+		PreviousStop: previousStop,
+	}
 }
 
 func TopNMetricAlphaNumeric(previousStop string) *TopNMetric {
-    return &TopNMetric{
-        Type:         "alphaNumeric",
-        PreviousStop: previousStop,
-    }
+	return &TopNMetric{
+		Type:         "alphaNumeric",
+		PreviousStop: previousStop,
+	}
 }
 
 func TopNMetricInverted(metric *TopNMetric) *TopNMetric {
-    return &TopNMetric{
-        Type:   "inverted",
-        Metric: metric,
-    }
+	return &TopNMetric{
+		Type:   "inverted",
+		Metric: metric,
+	}
 }
 
 // ---------------------------------
@@ -123,10 +123,10 @@ func TopNMetricInverted(metric *TopNMetric) *TopNMetric {
 // ---------------------------------
 
 type SearchSort struct {
-    Type string `json:"type"`
+	Type string `json:"type"`
 }
 
 var (
-    SearchSortLexicographic = &SearchSort{Type: "lexicographic"}
-    SearchSortStrlen        = &SearchSort{Type: "strlen"}
+	SearchSortLexicographic = &SearchSort{Type: "lexicographic"}
+	SearchSortStrlen        = &SearchSort{Type: "strlen"}
 )
