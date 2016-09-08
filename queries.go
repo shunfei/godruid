@@ -228,3 +228,52 @@ func (q *QueryTopN) onResponse(content []byte) error {
 	q.QueryResult = *res
 	return nil
 }
+
+// ---------------------------------
+// Select Query
+// ---------------------------------
+
+type QuerySelect struct {
+	QueryType   string                 `json:"queryType"`
+	DataSource  string                 `json:"dataSource"`
+	Intervals   []string               `json:"intervals"`
+	Filter      *Filter                `json:"filter,omitempty"`
+	Dimensions  []DimSpec              `json:"dimensions"`
+	Metrics     []string               `json:"metrics"`
+	Granularity Granlarity             `json:"granularity"`
+	PagingSpec  map[string]interface{} `json:"pagingSpec,omitempty"`
+	Context     map[string]interface{} `json:"context,omitempty"`
+
+	QueryResult SelectBlob `json:"-"`
+}
+
+// Select json blob from druid comes back as following:
+// http://druid.io/docs/latest/querying/select-query.html
+// the interesting results are in events blob which we
+// call as 'SelectEvent'.
+type SelectBlob struct {
+        Timestamp string       `json:"timestamp"`
+        Result    SelectResult `json:"result"`
+}
+
+type SelectResult struct {
+        PagingIdentifiers map[string]interface{} `json:"pagingIdentifiers"`
+        Events            []SelectEvent          `json:"events"`
+}
+
+type SelectEvent struct {
+        SegmentId string                 `json:"segmentId"`
+        Offset    int64                  `json:"offset"`
+        Event     map[string]interface{} `json:"event"`
+}
+
+func (q *QuerySelect) setup() { q.QueryType = "select" }
+func (q *QuerySelect) onResponse(content []byte) error {
+	res := new([]SelectBlob)
+	err := json.Unmarshal(content, res)
+	if err != nil {
+		return err
+	}
+	q.QueryResult = (*res)[0]
+	return nil
+}
