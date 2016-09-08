@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 const (
@@ -15,6 +16,7 @@ const (
 type Client struct {
 	Url      string
 	EndPoint string
+	Timeout  time.Duration
 
 	Debug        bool
 	LastRequest  string
@@ -53,7 +55,18 @@ func (c *Client) QueryRaw(req []byte) (result []byte, err error) {
 		return
 	}
 
-	resp, err := http.Post(c.Url+endPoint, "application/json", bytes.NewBuffer(req))
+	// By default, use 60 second timeout unless specified otherwise
+	// by the caller
+	clientTimeout := 60 * time.Second
+	if c.Timeout != 0 {
+		clientTimeout = c.Timeout
+	}
+
+	httpClient := &http.Client{
+		Timeout: clientTimeout,
+	}
+
+	resp, err := httpClient.Post(c.Url+endPoint, "application/json", bytes.NewBuffer(req))
 	if err != nil {
 		return
 	}
