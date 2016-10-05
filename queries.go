@@ -244,7 +244,7 @@ type QuerySelect struct {
 	PagingSpec  map[string]interface{} `json:"pagingSpec,omitempty"`
 	Context     map[string]interface{} `json:"context,omitempty"`
 
-	QueryResult SelectBlob `json:"-"`
+	QueryResult []SelectBlob `json:"-"`
 }
 
 // Select json blob from druid comes back as following:
@@ -274,6 +274,6 @@ func (q *QuerySelect) onResponse(content []byte) error {
 	if err != nil {
 		return err
 	}
-	q.QueryResult = (*res)[0]
+	q.QueryResult = *res
 	return nil
 }
