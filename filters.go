@@ -27,7 +27,7 @@ func FilterRegex(dimension, pattern string) *Filter {
 	}
 }
 
-func FilterInClause(dimension, values []interface{}) *Filter {
+func FilterInClause(dimension string, values []interface{}) *Filter {
 	return &Filter{
 		Type:      "in",
 		Dimension: dimension,
