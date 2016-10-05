@@ -4,6 +4,7 @@ type Filter struct {
 	Type      string      `json:"type"`
 	Dimension string      `json:"dimension,omitempty"`
 	Value     interface{} `json:"value,omitempty"`
+	Values  []interface{} `json:"values,omitempty"`
 	Pattern   string      `json:"pattern,omitempty"`
 	Function  string      `json:"function,omitempty"`
 	Field     *Filter     `json:"field,omitempty"`
@@ -23,6 +24,14 @@ func FilterRegex(dimension, pattern string) *Filter {
 		Type:      "regex",
 		Dimension: dimension,
 		Pattern:   pattern,
+	}
+}
+
+func FilterInClause(dimension, values []interface{}) *Filter {
+	return &Filter{
+		Type:      "in",
+		Dimension: dimension,
+		Values:    values,
 	}
 }
 
