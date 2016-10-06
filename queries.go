@@ -257,8 +257,8 @@ type SelectBlob struct {
 }
 
 type SelectResult struct {
-        PagingIdentifiers map[string]interface{} `json:"pagingIdentifiers"`
-        Events            []SelectEvent          `json:"events"`
+        PagingIdentifiers map[string]int64 `json:"pagingIdentifiers"`
+        Events            []SelectEvent    `json:"events"`
 }
 
 type SelectEvent struct {
