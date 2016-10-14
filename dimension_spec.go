@@ -10,12 +10,17 @@ type Dimension struct {
 }
 
 type DimExtractionFn struct {
-	Type         string       `json:"type"`
-	Expr         string       `json:"expr,omitempty"`
-	Query        *SearchQuery `json:"query,omitempty"`
-	TimeFormat   string       `json:"timeFormat,omitempty"`
-	ResultFormat string       `json:"resultFormat,omitempty"`
-	Function     string       `json:"function,omitempty"`
+	Type                    string       `json:"type"`
+	Expr                    string       `json:"expr,omitempty"`
+	Query                   *SearchQuery `json:"query,omitempty"`
+	TimeFormat              string       `json:"timeFormat,omitempty"`
+	ResultFormat            string       `json:"resultFormat,omitempty"`
+	Function                string       `json:"function,omitempty"`
+	Lookup                  string       `json:"lookup,omitempty"`
+	RetainMissingValue      bool         `json:"retainMissingValue,omitempty"`
+	Injective               bool         `json:"injective,omitempty"`
+	ReplaceMissingValueWith string       `json:"replaceMissingValueWith,omitempty"`
+	Optimize                bool         `json:"optimize,omitempty"`
 }
 
 func DimDefault(dimension, outputName string) DimSpec {
@@ -32,6 +37,13 @@ func DimExtraction(dimension, outputName string, fn *DimExtractionFn) DimSpec {
 		Dimension:       dimension,
 		OutputName:      outputName,
 		DimExtractionFn: fn,
+	}
+}
+
+func DimExFnRegisteredLookup(lookup string) *DimExtractionFn {
+	return &DimExtractionFn{
+		Type:   "registeredLookup",
+		Lookup: lookup,
 	}
 }
 
