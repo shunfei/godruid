@@ -1,14 +1,22 @@
 package godruid
 
 type Filter struct {
-	Type      string      `json:"type"`
-	Dimension string      `json:"dimension,omitempty"`
-	Value     interface{} `json:"value,omitempty"`
-	Values  []interface{} `json:"values,omitempty"`
-	Pattern   string      `json:"pattern,omitempty"`
-	Function  string      `json:"function,omitempty"`
-	Field     *Filter     `json:"field,omitempty"`
-	Fields    []*Filter   `json:"fields,omitempty"`
+	Type       string           `json:"type"`
+	Dimension  string           `json:"dimension,omitempty"`
+	Value      interface{}      `json:"value,omitempty"`
+	Values     []interface{}    `json:"values,omitempty"`
+	Pattern    string           `json:"pattern,omitempty"`
+	Function   string           `json:"function,omitempty"`
+	Field      *Filter          `json:"field,omitempty"`
+	Fields     []*Filter        `json:"fields,omitempty"`
+	SearchSpec *SearchQuerySpec `json:"query,omitempty"`
+}
+
+type SearchQuerySpec struct {
+	Type          string   `json:"type"`
+	Value         string   `json:"value,omitempty"`
+	Values        []string `json:"values,omitempty"`
+	CaseSensitive bool     `json:"caseSensitive,omitempty"`
 }
 
 func FilterSelector(dimension string, value interface{}) *Filter {
@@ -16,6 +24,29 @@ func FilterSelector(dimension string, value interface{}) *Filter {
 		Type:      "selector",
 		Dimension: dimension,
 		Value:     value,
+	}
+}
+
+func FilterCaseSensitiveContains(dimension string, value string) *Filter {
+	return &Filter{
+		Type:      "search",
+		Dimension: dimension,
+		SearchSpec: &SearchQuerySpec{
+			Type:          "contains",
+			Value:         value,
+			CaseSensitive: true,
+		},
+	}
+}
+
+func FilterCaseInsensitiveContains(dimension string, value string) *Filter {
+	return &Filter{
+		Type:      "search",
+		Dimension: dimension,
+		SearchSpec: &SearchQuerySpec{
+			Type:  "insensitive_contains",
+			Value: value,
+		},
 	}
 }
 
