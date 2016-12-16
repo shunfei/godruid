@@ -134,6 +134,7 @@ type QueryTimeBoundary struct {
 	QueryType  string                 `json:"queryType"`
 	DataSource string                 `json:"dataSource"`
 	Bound      string                 `json:"bound,omitempty"`
+	Filter     *Filter                `json:"filter,omitempty"`
 	Context    map[string]interface{} `json:"context,omitempty"`
 
 	QueryResult []TimeBoundaryItem `json:"-"`
@@ -146,7 +147,7 @@ type TimeBoundaryItem struct {
 
 type TimeBoundary struct {
 	MinTime string `json:"minTime"`
-	MaxTime string `json:"minTime"`
+	MaxTime string `json:"maxTime"`
 }
 
 func (q *QueryTimeBoundary) setup() { q.QueryType = "timeBoundary" }
