@@ -1,15 +1,20 @@
 package godruid
 
 type Filter struct {
-	Type       string           `json:"type"`
-	Dimension  string           `json:"dimension,omitempty"`
-	Value      interface{}      `json:"value,omitempty"`
-	Values     []interface{}    `json:"values,omitempty"`
-	Pattern    string           `json:"pattern,omitempty"`
-	Function   string           `json:"function,omitempty"`
-	Field      *Filter          `json:"field,omitempty"`
-	Fields     []*Filter        `json:"fields,omitempty"`
-	SearchSpec *SearchQuerySpec `json:"query,omitempty"`
+	Type        string           `json:"type"`
+	Dimension   string           `json:"dimension,omitempty"`
+	Value       interface{}      `json:"value,omitempty"`
+	Values      []interface{}    `json:"values,omitempty"`
+	Pattern     string           `json:"pattern,omitempty"`
+	Function    string           `json:"function,omitempty"`
+	Lower       string           `json:"lower,omitempty"`
+	Upper       string           `json:"upper,omitempty"`
+	LowerStrict *bool            `json:"lowerStrict,omitempty"`
+	UpperStrict *bool            `json:"upperStrict,omitempty"`
+	Ordering    string           `json:"ordering,omitempty"`
+	Field       *Filter          `json:"field,omitempty"`
+	Fields      []*Filter        `json:"fields,omitempty"`
+	SearchSpec  *SearchQuerySpec `json:"query,omitempty"`
 }
 
 type SearchQuerySpec struct {
@@ -24,6 +29,70 @@ func FilterSelector(dimension string, value interface{}) *Filter {
 		Type:      "selector",
 		Dimension: dimension,
 		Value:     value,
+	}
+}
+
+// Filter for <= operator
+func FilterLte(dimension string, value string, ordering string) *Filter {
+	upperStrict := false
+	return &Filter{
+		Type:        "bound",
+		Dimension:   dimension,
+		Upper:       value,
+		UpperStrict: &upperStrict,
+		Ordering:    ordering,
+	}
+}
+
+// Filter for < operator
+func FilterLt(dimension string, value string, ordering string) *Filter {
+	upperStrict := true
+	return &Filter{
+		Type:        "bound",
+		Dimension:   dimension,
+		Upper:       value,
+		UpperStrict: &upperStrict,
+		Ordering:    ordering,
+	}
+}
+
+// Filter for >= operator
+func FilterGte(dimension string, value string, ordering string) *Filter {
+	lowerStrict := false
+	return &Filter{
+		Type:        "bound",
+		Dimension:   dimension,
+		Lower:       value,
+		LowerStrict: &lowerStrict,
+		Ordering:    ordering,
+	}
+}
+
+// Filter for > operator
+func FilterGt(dimension string, value string, ordering string) *Filter {
+	lowerStrict := true
+	return &Filter{
+		Type:        "bound",
+		Dimension:   dimension,
+		Lower:       value,
+		LowerStrict: &lowerStrict,
+		Ordering:    ordering,
+	}
+}
+
+// Filter for range filter, i.e. lower <= value <= upper
+func FilterRangeIncl(dimension string, lower string, upper string,
+	ordering string) *Filter {
+	upperStrict := false
+	lowerStrict := false
+	return &Filter{
+		Type:        "bound",
+		Dimension:   dimension,
+		Lower:       lower,
+		Upper:       upper,
+		LowerStrict: &lowerStrict,
+		UpperStrict: &upperStrict,
+		Ordering:    ordering,
 	}
 }
 
