@@ -49,11 +49,8 @@ func (c *Client) QueryRaw(req []byte) (result []byte, err error) {
 	endPoint := c.EndPoint
 	if c.Debug {
 		endPoint += "?pretty"
-		c.LastRequest = string(req)
 	}
-	if err != nil {
-		return
-	}
+	c.LastRequest = string(req)
 
 	// By default, use 60 second timeout unless specified otherwise
 	// by the caller
