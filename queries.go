@@ -134,6 +134,7 @@ type QueryTimeBoundary struct {
 	QueryType  string                 `json:"queryType"`
 	DataSource string                 `json:"dataSource"`
 	Bound      string                 `json:"bound,omitempty"`
+	Filter     *Filter                `json:"filter,omitempty"`
 	Context    map[string]interface{} `json:"context,omitempty"`
 
 	QueryResult []TimeBoundaryItem `json:"-"`
@@ -146,7 +147,7 @@ type TimeBoundaryItem struct {
 
 type TimeBoundary struct {
 	MinTime string `json:"minTime"`
-	MaxTime string `json:"minTime"`
+	MaxTime string `json:"maxTime"`
 }
 
 func (q *QueryTimeBoundary) setup() { q.QueryType = "timeBoundary" }
@@ -237,6 +238,7 @@ type QuerySelect struct {
 	QueryType   string                 `json:"queryType"`
 	DataSource  string                 `json:"dataSource"`
 	Intervals   []string               `json:"intervals"`
+	Descending  bool                   `json:"descending"`
 	Filter      *Filter                `json:"filter,omitempty"`
 	Dimensions  []DimSpec              `json:"dimensions"`
 	Metrics     []string               `json:"metrics"`
@@ -244,7 +246,7 @@ type QuerySelect struct {
 	PagingSpec  map[string]interface{} `json:"pagingSpec,omitempty"`
 	Context     map[string]interface{} `json:"context,omitempty"`
 
-	QueryResult SelectBlob `json:"-"`
+	QueryResult []SelectBlob `json:"-"`
 }
 
 // Select json blob from druid comes back as following:
@@ -252,19 +254,19 @@ type QuerySelect struct {
 // the interesting results are in events blob which we
 // call as 'SelectEvent'.
 type SelectBlob struct {
-        Timestamp string       `json:"timestamp"`
-        Result    SelectResult `json:"result"`
+	Timestamp string       `json:"timestamp"`
+	Result    SelectResult `json:"result"`
 }
 
 type SelectResult struct {
-        PagingIdentifiers map[string]interface{} `json:"pagingIdentifiers"`
-        Events            []SelectEvent          `json:"events"`
+	PagingIdentifiers map[string]int64 `json:"pagingIdentifiers"`
+	Events            []SelectEvent    `json:"events"`
 }
 
 type SelectEvent struct {
-        SegmentId string                 `json:"segmentId"`
-        Offset    int64                  `json:"offset"`
-        Event     map[string]interface{} `json:"event"`
+	SegmentId string                 `json:"segmentId"`
+	Offset    int64                  `json:"offset"`
+	Event     map[string]interface{} `json:"event"`
 }
 
 func (q *QuerySelect) setup() { q.QueryType = "select" }
@@ -274,6 +276,6 @@ func (q *QuerySelect) onResponse(content []byte) error {
 	if err != nil {
 		return err
 	}
-	q.QueryResult = (*res)[0]
+	q.QueryResult = *res
 	return nil
 }
