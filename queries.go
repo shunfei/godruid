@@ -241,6 +241,7 @@ type QuerySelect struct {
 	Dimensions  []DimSpec              `json:"dimensions"`
 	Metrics     []string               `json:"metrics"`
 	Granularity Granlarity             `json:"granularity"`
+	Descending  string                 `json:"descending"`
 	PagingSpec  map[string]interface{} `json:"pagingSpec,omitempty"`
 	Context     map[string]interface{} `json:"context,omitempty"`
 
