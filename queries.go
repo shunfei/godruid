@@ -274,6 +274,8 @@ func (q *QuerySelect) onResponse(content []byte) error {
 	if err != nil {
 		return err
 	}
-	q.QueryResult = (*res)[0]
+	if len(*res) > 0 {
+		q.QueryResult = (*res)[0]
+	}
 	return nil
 }
