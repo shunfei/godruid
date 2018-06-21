@@ -1,13 +1,20 @@
 package godruid
 
+// documentation for druid filtering: http://druid.io/docs/latest/querying/filters.html
+
 type Filter struct {
-	Type      string      `json:"type"`
-	Dimension string      `json:"dimension,omitempty"`
-	Value     interface{} `json:"value,omitempty"`
-	Pattern   string      `json:"pattern,omitempty"`
-	Function  string      `json:"function,omitempty"`
-	Field     *Filter     `json:"field,omitempty"`
-	Fields    []*Filter   `json:"fields,omitempty"`
+	Type        string      `json:"type"`
+	Dimension   string      `json:"dimension,omitempty"`
+	Value       interface{} `json:"value,omitempty"`
+	Pattern     string      `json:"pattern,omitempty"`
+	Function    string      `json:"function,omitempty"`
+	Field       *Filter     `json:"field,omitempty"`
+	Fields      []*Filter   `json:"fields,omitempty"`
+	Lower       string      `json:"lower,omitempty"`
+	Upper       string      `json:"upper,omitempty"`
+	LowerStrict bool        `json:"lowerStrict,omitempty"`
+	UpperStrict bool        `json:"upperStrict,omitempty"`
+	Ordering    string      `json:"ordering,omitempty"`
 }
 
 func FilterSelector(dimension string, value interface{}) *Filter {
@@ -46,6 +53,55 @@ func FilterNot(filter *Filter) *Filter {
 	return &Filter{
 		Type:  "not",
 		Field: filter,
+	}
+}
+
+const (
+	filterOrderingLexicographic = "lexicographic"
+	filterOrderingAlphanumeric  = "alphanumeric"
+	filterOrderingNumeric       = "numeric"
+	filterOrderingStrlen        = "strlen"
+)
+
+// FilterGreaterEqual: [dimension] >= [value]
+func FilterGreaterEqual(dimension string, value string, ordering string) *Filter {
+	return &Filter{
+		Type:      "bound",
+		Dimension: dimension,
+		Lower:     value,
+		Ordering:  ordering,
+	}
+}
+
+// FilterGreater: [dimension] > [value]
+func FilterGreater(dimension string, value string, ordering string) *Filter {
+	return &Filter{
+		Type:        "bound",
+		Dimension:   dimension,
+		Lower:       value,
+		LowerStrict: true,
+		Ordering:    ordering,
+	}
+}
+
+// FilterLowerEqual: [dimension] <= [value]
+func FilterLowerEqual(dimension string, value string, ordering string) *Filter {
+	return &Filter{
+		Type:      "bound",
+		Dimension: dimension,
+		Upper:     value,
+		Ordering:  ordering,
+	}
+}
+
+// FilterLower: [dimension] < [value]
+func FilterLower(dimension string, value string, ordering string) *Filter {
+	return &Filter{
+		Type:        "bound",
+		Dimension:   dimension,
+		Upper:       value,
+		UpperStrict: true,
+		Ordering:    ordering,
 	}
 }
 
