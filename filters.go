@@ -96,6 +96,23 @@ func FilterRangeIncl(dimension string, lower string, upper string,
 	}
 }
 
+// Filter for range operation. Takes input lowerStrict and upperStrict
+// options. If lowerStrict = true, lower < value else lower <= value.
+// If upperStrict = true, value < upper else value <= upper.
+func FilterRange(dimension string, lower string, upper string,
+	lowerStrict bool, upperStrict bool,
+	ordering string) *Filter {
+	return &Filter{
+		Type:        "bound",
+		Dimension:   dimension,
+		Lower:       lower,
+		Upper:       upper,
+		LowerStrict: &lowerStrict,
+		UpperStrict: &upperStrict,
+		Ordering:    ordering,
+	}
+}
+
 func FilterCaseSensitiveContains(dimension string, value string) *Filter {
 	return &Filter{
 		Type:      "search",
