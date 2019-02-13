@@ -1,13 +1,37 @@
 package godruid
 
+import "errors"
+
 type Filter struct {
 	Type      string      `json:"type"`
 	Dimension string      `json:"dimension,omitempty"`
 	Value     interface{} `json:"value,omitempty"`
+	Lower     string      `json:"lower,omitempty"`
+	Upper     string      `json:"upper,omitempty"`
 	Pattern   string      `json:"pattern,omitempty"`
 	Function  string      `json:"function,omitempty"`
 	Field     *Filter     `json:"field,omitempty"`
 	Fields    []*Filter   `json:"fields,omitempty"`
+}
+
+func FilterBound(dimension string, bonds ...string) *Filter {
+	var lower string
+	var upper string
+
+	if len(bonds) < 1 || len(bonds) > 2 {
+		errors.New("lower and upper should be setted with 1 ~ 2 values")
+	} else {
+		lower = bonds[0]
+		if len(bonds) > 1 {
+			upper = bonds[1]
+		}
+	}
+	return &Filter{
+		Type:      "bound",
+		Dimension: dimension,
+		Lower:     lower,
+		Upper:     upper,
+	}
 }
 
 func FilterSelector(dimension string, value interface{}) *Filter {
