@@ -1,7 +1,5 @@
 package godruid
 
-import "errors"
-
 type Filter struct {
 	Type      string      `json:"type"`
 	Dimension string      `json:"dimension,omitempty"`
@@ -18,9 +16,7 @@ func FilterBound(dimension string, bonds ...string) *Filter {
 	var lower string
 	var upper string
 
-	if len(bonds) < 1 || len(bonds) > 2 {
-		errors.New("lower and upper should be setted with 1 ~ 2 values")
-	} else {
+	if len(bonds) >= 1 && len(bonds) <= 2 {
 		lower = bonds[0]
 		if len(bonds) > 1 {
 			upper = bonds[1]
