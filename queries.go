@@ -1,6 +1,7 @@
 package godruid
 
 import (
+	"bytes"
 	"encoding/json"
 )
 
@@ -41,8 +42,9 @@ type GroupbyItem struct {
 func (q *QueryGroupBy) setup() { q.QueryType = "groupBy" }
 func (q *QueryGroupBy) onResponse(content []byte) error {
 	res := new([]GroupbyItem)
-	err := json.Unmarshal(content, res)
-	if err != nil {
+	d := json.NewDecoder(bytes.NewReader(content))
+	d.UseNumber()
+	if err := d.Decode(res); err != nil {
 		return err
 	}
 	q.QueryResult = *res
@@ -80,8 +82,9 @@ type DimValue struct {
 func (q *QuerySearch) setup() { q.QueryType = "search" }
 func (q *QuerySearch) onResponse(content []byte) error {
 	res := new([]SearchItem)
-	err := json.Unmarshal(content, res)
-	if err != nil {
+	d := json.NewDecoder(bytes.NewReader(content))
+	d.UseNumber()
+	if err := d.Decode(res); err != nil {
 		return err
 	}
 	q.QueryResult = *res
@@ -118,8 +121,9 @@ type ColumnItem struct {
 func (q *QuerySegmentMetadata) setup() { q.QueryType = "segmentMetadata" }
 func (q *QuerySegmentMetadata) onResponse(content []byte) error {
 	res := new([]SegmentMetaData)
-	err := json.Unmarshal(content, res)
-	if err != nil {
+	d := json.NewDecoder(bytes.NewReader(content))
+	d.UseNumber()
+	if err := d.Decode(res); err != nil {
 		return err
 	}
 	q.QueryResult = *res
@@ -153,8 +157,9 @@ type TimeBoundary struct {
 func (q *QueryTimeBoundary) setup() { q.QueryType = "timeBoundary" }
 func (q *QueryTimeBoundary) onResponse(content []byte) error {
 	res := new([]TimeBoundaryItem)
-	err := json.Unmarshal(content, res)
-	if err != nil {
+	d := json.NewDecoder(bytes.NewReader(content))
+	d.UseNumber()
+	if err := d.Decode(res); err != nil {
 		return err
 	}
 	q.QueryResult = *res
@@ -186,8 +191,9 @@ type Timeseries struct {
 func (q *QueryTimeseries) setup() { q.QueryType = "timeseries" }
 func (q *QueryTimeseries) onResponse(content []byte) error {
 	res := new([]Timeseries)
-	err := json.Unmarshal(content, res)
-	if err != nil {
+	d := json.NewDecoder(bytes.NewReader(content))
+	d.UseNumber()
+	if err := d.Decode(res); err != nil {
 		return err
 	}
 	q.QueryResult = *res
@@ -222,8 +228,9 @@ type TopNItem struct {
 func (q *QueryTopN) setup() { q.QueryType = "topN" }
 func (q *QueryTopN) onResponse(content []byte) error {
 	res := new([]TopNItem)
-	err := json.Unmarshal(content, res)
-	if err != nil {
+	d := json.NewDecoder(bytes.NewReader(content))
+	d.UseNumber()
+	if err := d.Decode(res); err != nil {
 		return err
 	}
 	q.QueryResult = *res
@@ -272,8 +279,9 @@ type SelectEvent struct {
 func (q *QuerySelect) setup() { q.QueryType = "select" }
 func (q *QuerySelect) onResponse(content []byte) error {
 	res := new([]SelectBlob)
-	err := json.Unmarshal(content, res)
-	if err != nil {
+	d := json.NewDecoder(bytes.NewReader(content))
+	d.UseNumber()
+	if err := d.Decode(res); err != nil {
 		return err
 	}
 	q.QueryResult = *res
