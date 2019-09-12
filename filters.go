@@ -4,6 +4,7 @@ type Filter struct {
 	Type      string      `json:"type"`
 	Dimension string      `json:"dimension,omitempty"`
 	Value     interface{} `json:"value,omitempty"`
+	Values    interface{} `json:"values,omitempty"`
 	Pattern   string      `json:"pattern,omitempty"`
 	Function  string      `json:"function,omitempty"`
 	Field     *Filter     `json:"field,omitempty"`
