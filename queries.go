@@ -287,3 +287,40 @@ func (q *QuerySelect) onResponse(content []byte) error {
 	q.QueryResult = *res
 	return nil
 }
+
+// ---------------------------------
+// Scan Query
+// ---------------------------------
+
+// QueryScan is the model for scan query
+type QueryScan struct {
+	QueryType    string                 `json:"queryType"`
+	DataSource   string                 `json:"dataSource"`
+	Intervals    []string               `json:"intervals"`
+	BatchSize    int64                  `json:"batchSize"`
+	Limit        int64                  `json:"limit"`
+	Filter       *Filter                `json:"filter,omitempty"`
+	Context      map[string]interface{} `json:"context,omitempty"`
+	ResultFormat string                 `json:"resultFormat,omitempty"`
+
+	QueryResult []ScanBlob `json:"-"`
+}
+
+// ScanBlob is the response to scan query
+type ScanBlob struct {
+	Columns   []string                 `json:"columns"`
+	SegmentID string                   `json:"segmentId"`
+	Events    []map[string]interface{} `json:"events"`
+}
+
+func (q *QueryScan) setup() { q.QueryType = "scan" }
+func (q *QueryScan) onResponse(content []byte) error {
+	res := new([]ScanBlob)
+	d := json.NewDecoder(bytes.NewReader(content))
+	d.UseNumber()
+	if err := d.Decode(res); err != nil {
+		return err
+	}
+	q.QueryResult = *res
+	return nil
+}
