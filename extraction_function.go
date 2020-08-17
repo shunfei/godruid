@@ -1,4 +1,6 @@
 package godruid
 
-type ExtractionFn interface{}
+type ExtractionFn struct {
+	Type string `json:"type"`
+}
 
