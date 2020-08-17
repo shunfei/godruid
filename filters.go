@@ -1,20 +1,21 @@
 package godruid
 
 type Filter struct {
-	Type        string           `json:"type"`
-	Dimension   string           `json:"dimension,omitempty"`
-	Value       interface{}      `json:"value,omitempty"`
-	Values      []interface{}    `json:"values,omitempty"`
-	Pattern     string           `json:"pattern,omitempty"`
-	Function    string           `json:"function,omitempty"`
-	Lower       string           `json:"lower,omitempty"`
-	Upper       string           `json:"upper,omitempty"`
-	LowerStrict *bool            `json:"lowerStrict,omitempty"`
-	UpperStrict *bool            `json:"upperStrict,omitempty"`
-	Ordering    string           `json:"ordering,omitempty"`
-	Field       *Filter          `json:"field,omitempty"`
-	Fields      []*Filter        `json:"fields,omitempty"`
-	SearchSpec  *SearchQuerySpec `json:"query,omitempty"`
+	Type         string           `json:"type"`
+	Dimension    string           `json:"dimension,omitempty"`
+	Value        interface{}      `json:"value,omitempty"`
+	Values       []interface{}    `json:"values,omitempty"`
+	Pattern      string           `json:"pattern,omitempty"`
+	Function     string           `json:"function,omitempty"`
+	Lower        string           `json:"lower,omitempty"`
+	Upper        string           `json:"upper,omitempty"`
+	LowerStrict  *bool            `json:"lowerStrict,omitempty"`
+	UpperStrict  *bool            `json:"upperStrict,omitempty"`
+	Ordering     string           `json:"ordering,omitempty"`
+	Field        *Filter          `json:"field,omitempty"`
+	Fields       []*Filter        `json:"fields,omitempty"`
+	SearchSpec   *SearchQuerySpec `json:"query,omitempty"`
+	ExtractionFn *ExtractionFn    `json:"extractionFn,omitempty"`
 }
 
 type SearchQuerySpec struct {
