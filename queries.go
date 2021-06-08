@@ -16,6 +16,13 @@ type Query interface {
 // GroupBy Query
 // ---------------------------------
 
+type VirtualColumn struct {
+	Type       string `json:"type"`
+	Name       string `json:"name"`
+	Expression string `json:"expression"`
+	OutputType string `json:"outputType"`
+}
+
 type QueryGroupBy struct {
 	QueryType        string                 `json:"queryType"`
 	DataSource       string                 `json:"dataSource"`
@@ -28,6 +35,8 @@ type QueryGroupBy struct {
 	PostAggregations []PostAggregation      `json:"postAggregations,omitempty"`
 	Intervals        []string               `json:"intervals"`
 	Context          map[string]interface{} `json:"context,omitempty"`
+	// TODO add to other query types if necessary
+	VirtualColumns   []VirtualColumn        `json:"virtualColumns,omitempty"`
 
 	QueryResult []GroupbyItem `json:"-"`
 }
@@ -173,6 +182,8 @@ type QueryTimeseries struct {
 	PostAggregations []PostAggregation      `json:"postAggregations,omitempty"`
 	Intervals        []string               `json:"intervals"`
 	Context          map[string]interface{} `json:"context,omitempty"`
+	// TODO add to other query types if necessary
+	VirtualColumns   []VirtualColumn        `json:"virtualColumns,omitempty"`
 
 	QueryResult []Timeseries `json:"-"`
 }
