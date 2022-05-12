@@ -9,6 +9,15 @@ type Filter struct {
 	Field        *Filter             `json:"field,omitempty"`
 	Fields       []*Filter           `json:"fields,omitempty"`
 	ExtractionFn *FilterExtractionFn `json:"extractionFn,omitempty"`
+	QueryFilter  *Query              `json:"query,omitempty"`
+	Values       []string            `json:"values,omitempty"`
+}
+
+// QueryFilter is used for search filter
+// https://druid.apache.org/docs/latest/querying/filters.html
+type QueryFilter struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
 }
 
 type FilterExtractionFn struct {
