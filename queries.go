@@ -296,6 +296,7 @@ func (q *QuerySelect) onResponse(content []byte) error {
 type QueryScan struct {
 	QueryType    string                 `json:"queryType"`
 	DataSource   string                 `json:"dataSource"`
+	Columns      []string               `json:"columns"`
 	Intervals    []string               `json:"intervals"`
 	BatchSize    int64                  `json:"batchSize"`
 	Limit        int64                  `json:"limit"`
