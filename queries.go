@@ -300,7 +300,7 @@ type QueryScan struct {
 	Intervals    []string               `json:"intervals"`
 	BatchSize    int64                  `json:"batchSize"`
 	Limit        int64                  `json:"limit"`
-	Order        string                 `json:"order"`
+	Order        string                 `json:"order,omitempty"`
 	Filter       *Filter                `json:"filter,omitempty"`
 	Context      map[string]interface{} `json:"context,omitempty"`
 	ResultFormat string                 `json:"resultFormat,omitempty"`
